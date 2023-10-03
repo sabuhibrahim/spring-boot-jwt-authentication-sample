@@ -1,0 +1,41 @@
+version: '3'
+services:
+  postgres:
+    container_name: postgres
+    image: 'postgres:latest'
+    environment:
+      - 'PGPASSWORD=secret'
+      - 'POSTGRES_DB=jwtdb'
+      - 'POSTGRES_PASSWORD=jwtpass'
+      - 'POSTGRES_USER=jwtuser'
+    ports:
+      - '5432:5432'
+    restart: always
+    volumes:
+      - './pgsql:/var/lib/postgresql/data'
+    networks:
+      - spring-jwt
+    
+  backend:
+    container_name: backend
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+    links:
+      - postgres
+    networks:
+      - spring-jwt
+
+
+networks:
+  spring-jwt:
+    driver: bridge
+
+volumes:
+  pgsql:
+    driver: local
