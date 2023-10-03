@@ -1,6 +1,7 @@
 package com.auth.jwt.auth.forms;
 
 import com.auth.jwt.auth.validators.PasswordMatch;
+import com.auth.jwt.auth.validators.PasswordMatchForm;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -14,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @PasswordMatch
-public class RegisterForm {
+public class RegisterForm implements PasswordMatchForm {
   @NotEmpty
   private String fullName;
   @NotEmpty
