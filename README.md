@@ -1,4 +1,4 @@
-# Sample jwt application Spring Boot
+# Sample jwt application with Spring Boot
 
 This project includes authentication API's (login, register, logout, refresh, forgot-password, reset-password). It uses a PostgreSQL connection with Flyway migration.
 Also there is sample dockerizing example.
