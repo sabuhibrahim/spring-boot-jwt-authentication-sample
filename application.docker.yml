@@ -23,6 +23,8 @@ spring:
     locations: classpath:db/migration
     baselineOnMigrate:  true
 
+server:
+  port: 80
       
 app:
   security:
@@ -34,7 +36,5 @@ app:
         exp: 1209600 # 14 days
       reset:
         exp: 600 # 10 min
-
-# 435832564363664276414e566c786478386473444c694245496466553871684d
 
 

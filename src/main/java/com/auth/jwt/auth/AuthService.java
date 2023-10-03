@@ -4,6 +4,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import com.auth.jwt.auth.forms.AccessToken;
 import com.auth.jwt.auth.forms.ForgotPasswordForm;
@@ -15,7 +16,9 @@ import com.auth.jwt.auth.forms.SuccessResponse;
 import com.auth.jwt.auth.forms.TokenPairs;
 import com.auth.jwt.auth.models.User;
 import com.auth.jwt.auth.repositories.UserRepository;
+import com.auth.jwt.auth.utils.Role;
 import com.auth.jwt.config.JwtService;
+import com.auth.jwt.exception.FormNotValidException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,11 +31,17 @@ public class AuthService {
   private final JwtService jwtService;
   public final AuthenticationManager authenticationManager;
 
-  public TokenPairs register(RegisterForm registerForm) {
+  public TokenPairs register(RegisterForm registerForm) throws FormNotValidException {
+
+    if (userRepository.existsByEmail(registerForm.getEmail())) {
+      throw new FormNotValidException("email: Email already taken");
+    }
+
     User user = User.builder()
         .email(registerForm.getEmail())
         .fullName(registerForm.getFullName())
         .password(passwordEncoder.encode(registerForm.getPassword()))
+        .role(Role.USER)
         .build();
     userRepository.save(user);
     return jwtService.generateTokenPair(user);

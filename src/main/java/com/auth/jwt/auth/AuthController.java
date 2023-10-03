@@ -15,18 +15,20 @@ import com.auth.jwt.auth.forms.RefreshForm;
 import com.auth.jwt.auth.forms.RegisterForm;
 import com.auth.jwt.auth.forms.SuccessResponse;
 import com.auth.jwt.auth.forms.TokenPairs;
+import com.auth.jwt.exception.FormNotValidException;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("api/v1/auth")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class AuthController {
   private final AuthService authService;
 
   @PostMapping("/register")
-  public ResponseEntity<TokenPairs> register(@Valid @RequestBody RegisterForm registerForm) {
+  public ResponseEntity<TokenPairs> register(@Valid @RequestBody RegisterForm registerForm)
+      throws FormNotValidException {
     return ResponseEntity.ok(authService.register(registerForm));
   }
 

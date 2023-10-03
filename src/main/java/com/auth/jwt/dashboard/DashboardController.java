@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.auth.jwt.auth.forms.SuccessResponse;
 
 @RestController
-@RequestMapping("api/v1/dashboard")
+@RequestMapping("/api/v1/dashboard")
 public class DashboardController {
   @GetMapping
   public ResponseEntity<SuccessResponse> index() {

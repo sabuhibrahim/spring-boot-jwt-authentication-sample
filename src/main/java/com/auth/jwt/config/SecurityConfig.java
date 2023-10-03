@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-  private static final String[] WHITE_LIST = { "api/v1/auth/**" };
+  private static final String[] WHITE_LIST = { "/api/v1/auth/**" };
 
   private final JwtAuthFilter jwtAuthFilter;
 
@@ -29,12 +29,12 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .csrf(csrf -> csrf.disable())
-        .authorizeHttpRequests(auth -> auth.requestMatchers(WHITE_LIST).permitAll().anyRequest().authenticated())
+        .authorizeHttpRequests(auth -> auth.requestMatchers("/api/v1/auth/**").permitAll().anyRequest().authenticated())
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authenticationProvider(authenticationProvider)
         .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
         .logout(logout -> logout
-            .logoutUrl("api/v1/auth/logout")
+            .logoutUrl("/api/v1/auth/logout")
             .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
             .addLogoutHandler(logoutHandler));
 
